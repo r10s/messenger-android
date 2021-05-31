@@ -29,12 +29,13 @@ import android.hardware.Camera.Size;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Build.VERSION;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.R;
@@ -205,7 +206,7 @@ public class CameraView extends ViewGroup {
     }
 
     if (previewHeight == 0 || previewWidth == 0) {
-      Log.w(TAG, "skipping layout due to zero-width/height preview size");
+      Log.i(TAG, "skipping layout due to zero-width/height preview size");
       return;
     }
 

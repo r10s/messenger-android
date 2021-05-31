@@ -40,6 +40,7 @@ import org.thoughtcrime.securesms.components.SearchToolbar;
 import org.thoughtcrime.securesms.connect.AccountManager;
 import org.thoughtcrime.securesms.connect.ApplicationDcContext;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.connect.DirectShareUtil;
 import org.thoughtcrime.securesms.map.MapActivity;
 import org.thoughtcrime.securesms.qr.QrActivity;
 import org.thoughtcrime.securesms.qr.QrCodeHandler;
@@ -147,6 +148,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     dynamicTheme.onResume(this);
     dynamicLanguage.onResume(this);
 
+    DirectShareUtil.triggerRefreshDirectShare(this);
   }
 
   @Override

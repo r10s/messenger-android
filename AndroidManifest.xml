@@ -95,8 +95,8 @@
             <data android:mimeType="*/*"/>
         </intent-filter>
         <meta-data
-                android:name="android.service.chooser.chooser_target_service"
-                android:value="org.thoughtcrime.securesms.service.DirectShareService" />
+            android:name="android.service.chooser.chooser_target_service"
+            android:value="androidx.sharetarget.ChooserTargetServiceCompat" />
 
     </activity>
 
@@ -128,6 +128,9 @@
                    android:resource="@mipmap/ic_launcher" />
         <meta-data android:name="com.sec.minimode.icon.landscape.normal"
                    android:resource="@mipmap/ic_launcher" />
+        <meta-data
+            android:name="android.app.shortcuts"
+            android:resource="@xml/shortcuts" />
 
     </activity-alias>
 
@@ -275,13 +278,6 @@
     <service android:name=".connect.KeepAliveService" android:enabled="true" />
 
     <service android:name=".geolocation.LocationBackgroundService"  />
-
-    <service android:name=".service.DirectShareService"
-             android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
-        <intent-filter>
-            <action android:name="android.service.chooser.ChooserTargetService" />
-        </intent-filter>
-    </service>
 
     <service android:name=".service.GenericForegroundService" />
 

@@ -467,6 +467,13 @@ public class ApplicationDcContext extends DcContext {
       }
       break;
     }
+
+    if (id == DC_EVENT_CHAT_MODIFIED) {
+      // Possibly a chat was deleted or the avatar was changed, directly refresh DirectShare so that
+      // a new chat can move up / the chat avatar change is populated
+      DirectShareUtil.triggerRefreshDirectShare(context);
+    }
+
     return 0;
   }
 

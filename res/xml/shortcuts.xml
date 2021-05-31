@@ -1,0 +1,6 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+	<share-target android:targetClass="org.thoughtcrime.securesms.ShareActivity">
+		<data android:mimeType="text/plain" />
+		<category android:name="android.shortcut.conversation" />
+	</share-target>
+</shortcuts>

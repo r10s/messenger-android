@@ -21,13 +21,15 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Toast;
+import androidx.core.content.pm.ShortcutManagerCompat;
 
 import org.thoughtcrime.securesms.connect.ApplicationDcContext;
 import org.thoughtcrime.securesms.connect.DcHelper;
@@ -202,6 +204,11 @@ public class ShareActivity extends PassphraseRequiredActionBarActivity implement
 
   private void handleResolvedMedia(Intent intent) {
     int       chatId           = intent.getIntExtra(EXTRA_CHAT_ID, -1);
+
+    String shortcutId = intent.getStringExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID);
+    if (chatId == -1 && shortcutId != null) {
+      chatId = Integer.parseInt(shortcutId);
+    }
 
     String[] extraEmail = getIntent().getStringArrayExtra(Intent.EXTRA_EMAIL);
     /*

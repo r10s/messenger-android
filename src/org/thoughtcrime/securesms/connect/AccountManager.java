@@ -17,7 +17,6 @@ import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.ConversationListActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.WelcomeActivity;
-import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.task.ProgressDialogAsyncTask;
 
 import java.io.File;
@@ -103,6 +102,7 @@ public class AccountManager {
         appContext.dcContext.unref();
         appContext.dcContext = new ApplicationDcContext(context);
         appContext.dcContext.setStockTranslations();
+        DirectShareUtil.resetAllShortcuts(appContext);
     }
 
 

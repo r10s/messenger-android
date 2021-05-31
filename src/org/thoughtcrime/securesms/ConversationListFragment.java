@@ -63,6 +63,7 @@ import org.thoughtcrime.securesms.connect.ApplicationDcContext;
 import org.thoughtcrime.securesms.connect.DcChatlistLoader;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.connect.DirectShareUtil;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.util.RelayUtil;
 import org.thoughtcrime.securesms.util.SendRelayedMessageUtil;
@@ -352,6 +353,7 @@ public class ConversationListFragment extends Fragment
               else {
                 dcContext.notificationCenter.removeNotifications((int) chatId);
                 dcContext.deleteChat((int) chatId);
+                DirectShareUtil.clearShortcut(getContext(), (int) chatId);
               }
             }
             return null;
