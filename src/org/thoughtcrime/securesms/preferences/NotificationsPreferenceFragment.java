@@ -121,11 +121,7 @@ public class NotificationsPreferenceFragment extends ListSummaryPreferenceFragme
     if (requestCode == REQUEST_CODE_NOTIFICATION_SELECTED && resultCode == RESULT_OK && data != null) {
       Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
-      if (Settings.System.DEFAULT_NOTIFICATION_URI.equals(uri)) {
-        Prefs.removeNotificationRingtone(getContext());
-      } else {
-        Prefs.setNotificationRingtone(getContext(), uri != null ? uri : Uri.EMPTY);
-      }
+      Prefs.setNotificationRingtone(getContext(), uri);
 
       initializeRingtoneSummary(findPreference(Prefs.RINGTONE_PREF));
     }
@@ -136,7 +132,7 @@ public class NotificationsPreferenceFragment extends ListSummaryPreferenceFragme
     public boolean onPreferenceChange(Preference preference, Object newValue) {
       Uri value = (Uri) newValue;
 
-      if (value == null || TextUtils.isEmpty(value.toString())) {
+      if (value == null) {
         preference.setSummary(R.string.pref_silent);
       } else {
         Ringtone tone = RingtoneManager.getRingtone(getActivity(), value);

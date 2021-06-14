@@ -176,36 +176,54 @@ public class Prefs {
 
   // ringtone
 
-  public static @NonNull Uri getNotificationRingtone(Context context) {
-    String result = getStringPreference(context, RINGTONE_PREF, Settings.System.DEFAULT_NOTIFICATION_URI.toString());
-
-    if (result != null && result.startsWith("file:")) {
-      result = Settings.System.DEFAULT_NOTIFICATION_URI.toString();
+  public static @Nullable Uri getNotificationRingtone(Context context) {
+    String result = getStringPreference(context, RINGTONE_PREF, null);
+    if (result == null || result.startsWith("file:")) {
+      return Settings.System.DEFAULT_NOTIFICATION_URI;
     }
-
+    if (result.isEmpty()) {
+      return null;
+    }
     return Uri.parse(result);
   }
 
-  public static void removeNotificationRingtone(Context context) {
-    removePreference(context, RINGTONE_PREF);
-  }
-
   public static void setNotificationRingtone(Context context, Uri ringtone) {
-    setStringPreference(context, RINGTONE_PREF, ringtone.toString());
+    if (Settings.System.DEFAULT_NOTIFICATION_URI.equals(ringtone)) {
+      removePreference(context, RINGTONE_PREF);
+    } else {
+      if (ringtone == null) {
+        ringtone = Uri.EMPTY;
+      }
+      setStringPreference(context, RINGTONE_PREF, ringtone.toString());
+    }
   }
 
   public static void setChatRingtone(Context context, int chatId, Uri ringtone) {
-    if(ringtone!=null) {
+    Uri defaultValue = getNotificationRingtone(context);
+    if ((defaultValue == null && ringtone == null)
+        || (defaultValue != null && defaultValue.equals(ringtone))) {
+      removePreference(context, CHAT_RINGTONE+chatId);
+    } else {
+      if (ringtone == null) {
+        ringtone = Uri.EMPTY;
+      }
       setStringPreference(context, CHAT_RINGTONE+chatId, ringtone.toString());
     }
-    else {
-      removePreference(context, CHAT_RINGTONE+chatId);
-    }
+  }
+
+  public static boolean isChatRingtoneSet(Context context, int chatId) {
+    return getStringPreference(context, CHAT_RINGTONE+chatId, null) != null;
   }
 
   public static @Nullable Uri getChatRingtone(Context context, int chatId) {
     String result = getStringPreference(context, CHAT_RINGTONE+chatId, null);
-    return result==null? null : Uri.parse(result);
+    if (result == null || result.startsWith("file:")) {
+      return getNotificationRingtone(context);
+    }
+    if (result.isEmpty()) {
+      return null;
+    }
+    return Uri.parse(result);
   }
 
   public static boolean reliableService(Context context) {

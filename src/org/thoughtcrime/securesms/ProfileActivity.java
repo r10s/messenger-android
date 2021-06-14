@@ -410,11 +410,13 @@ public class ProfileActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void onSoundSettings() {
-    Uri current = Prefs.getChatRingtone(this, chatId);
     Uri defaultUri = Prefs.getNotificationRingtone(this);
-
-    if      (current == null)              current = Settings.System.DEFAULT_NOTIFICATION_URI;
-    else if (current.toString().isEmpty()) current = null;
+    Uri current;
+    if (!Prefs.isChatRingtoneSet(this, chatId)) {
+      current = Settings.System.DEFAULT_NOTIFICATION_URI;
+    } else {
+      current = Prefs.getChatRingtone(this, chatId);
+    }
 
     Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
     intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
@@ -538,11 +540,6 @@ public class ProfileActivity extends PassphraseRequiredActionBarActivity
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode==REQUEST_CODE_PICK_RINGTONE && resultCode== Activity.RESULT_OK && data!=null) {
       Uri value = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-      Uri defaultValue = Prefs.getNotificationRingtone(this);
-
-      if (defaultValue.equals(value)) value = null;
-      else if (value == null)         value = Uri.EMPTY;
-
       Prefs.setChatRingtone(this, chatId, value);
     }
   }

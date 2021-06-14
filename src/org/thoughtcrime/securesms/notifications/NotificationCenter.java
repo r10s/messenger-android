@@ -61,16 +61,7 @@ public class NotificationCenter {
     }
 
     private @Nullable Uri effectiveSound(int chatId) { // chatId=0: return app-global setting
-        @Nullable Uri chatRingtone = Prefs.getChatRingtone(context, chatId);
-        if (chatRingtone!=null) {
-            return chatRingtone;
-        } else {
-            @NonNull Uri appDefaultRingtone = Prefs.getNotificationRingtone(context);
-            if (!TextUtils.isEmpty(appDefaultRingtone.toString())) {
-                return appDefaultRingtone;
-            }
-        }
-        return null;
+        return Prefs.getChatRingtone(context, chatId);
     }
 
     private boolean effectiveVibrate(int chatId) { // chatId=0: return app-global setting
@@ -84,7 +75,7 @@ public class NotificationCenter {
     }
 
     private boolean requiresIndependentChannel(int chatId) {
-        return Prefs.getChatRingtone(context, chatId) != null 
+        return Prefs.isChatRingtoneSet(context, chatId)
                 || Prefs.getChatVibrate(context, chatId) != Prefs.VibrateState.DEFAULT;
     }
 
@@ -272,7 +263,7 @@ public class NotificationCenter {
                 // create a channel with the given settings;
                 // we cannot change the settings, however, this is handled by using different values for chId
                 if(!channelExists) {
-                    NotificationChannel channel = new NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_HIGH);
+                    NotificationChannel channel = new NotificationChannel(channelId, name, ringtone==null? NotificationManager.IMPORTANCE_LOW : NotificationManager.IMPORTANCE_HIGH);
                     channel.setDescription("Informs about new messages.");
                     channel.setGroup(getNotificationChannelGroup(notificationManager));
                     channel.enableVibration(defaultVibrate);
@@ -285,7 +276,7 @@ public class NotificationCenter {
                         channel.enableLights(false);
                     }
 
-                    if (ringtone != null && !TextUtils.isEmpty(ringtone.toString())) {
+                    if (ringtone != null) {
                         channel.setSound(ringtone,
                                 new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)
                                         .setUsage(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_INSTANT)
