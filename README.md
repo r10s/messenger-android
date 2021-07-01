@@ -111,6 +111,23 @@ done with care.
 Then, install Rust using [rustup](https://rustup.rs/). Install Rust
 toolchains for cross-compilation by executing `scripts/install-toolchains.sh`.
 
+After that, add `$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/HOST/bin` to your $PATH,
+where HOST is a descriptor for your host cpu architecture (e.g. linux-x86_64) and likely
+the name of the only subdirectory within `$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt`.
+
+Then also add the correct clang-linkers to `~/.cargo/config.toml` (create it if it doesn't exist):
+
+```
+[target.armv7-linux-androideabi]
+linker = "PATH_TO_NDK/toolchains/llvm/prebuilt/HOST/bin/armv7a-linux-androideabi18-clang"
+[target.aarch64-linux-android]
+linker = "PATH_TO_NDK/toolchains/llvm/prebuilt/HOST/bin/aarch64-linux-android21-clang"
+[target.i686-linux-android]
+linker = "PATH_TO_NDK/toolchains/llvm/prebuilt/HOST/bin/i686-linux-android18-clang"
+[target.x86_64-linux-android]
+linker = "PATH_TO_NDK/toolchains/llvm/prebuilt/HOST/bin/x86_64-linux-android21-clang"
+```
+
 After that, call `./ndk-make.sh` in the root directory to build core-rust.
 Afterwards run the project in Android Studio. The project requires API 25.
 
