@@ -23,7 +23,10 @@ import android.opengl.EGLConfig;
 import android.opengl.EGLContext;
 import android.opengl.EGLDisplay;
 import android.opengl.EGLSurface;
+import android.os.Build;
 import android.view.Surface;
+
+import androidx.annotation.RequiresApi;
 
 @TargetApi(17)
 public class InputSurface {
@@ -118,6 +121,7 @@ public class InputSurface {
         return mSurface;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void setPresentationTime(long nsecs) {
         EGLExt.eglPresentationTimeANDROID(mEGLDisplay, mEGLSurface, nsecs);
     }

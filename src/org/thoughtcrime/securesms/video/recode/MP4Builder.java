@@ -54,7 +54,7 @@ public class MP4Builder {
     private HashMap<Track, long[]> track2SampleSizes = new HashMap<>();
     private ByteBuffer sizeBuffer = null;
 
-    public MP4Builder createMovie(Mp4Movie mp4Movie) throws Exception {
+    public MP4Builder createMovie(Mp4Movie mp4Movie) throws IOException {
         currentMp4Movie = mp4Movie;
 
         fos = new FileOutputStream(mp4Movie.getCacheFile());
@@ -72,7 +72,7 @@ public class MP4Builder {
         return this;
     }
 
-    private void flushCurrentMdat() throws Exception {
+    private void flushCurrentMdat() throws IOException {
         long oldPosition = fc.position();
         fc.position(mdat.getOffset());
         mdat.getBox(fc);
@@ -82,7 +82,9 @@ public class MP4Builder {
         fos.flush();
     }
 
-    public boolean writeSampleData(int trackIndex, ByteBuffer byteBuf, MediaCodec.BufferInfo bufferInfo, boolean isAudio) throws Exception {
+    public boolean writeSampleData(int trackIndex, ByteBuffer byteBuf,
+                                   MediaCodec.BufferInfo bufferInfo, boolean isAudio)
+        throws IOException {
         if (writeNewMdat) {
             mdat.setContentSize(0);
             mdat.getBox(fc);
@@ -123,11 +125,11 @@ public class MP4Builder {
         return flush;
     }
 
-    public int addTrack(MediaFormat mediaFormat, boolean isAudio) throws Exception {
+    public int addTrack(MediaFormat mediaFormat, boolean isAudio) {
         return currentMp4Movie.addTrack(mediaFormat, isAudio);
     }
 
-    public void finishMovie(boolean error) throws Exception {
+    public void finishMovie(boolean error) throws IOException {
         if (mdat.getContentSize() != 0) {
             flushCurrentMdat();
         }

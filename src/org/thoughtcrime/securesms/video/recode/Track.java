@@ -59,7 +59,7 @@ public class Track {
         samplingFrequencyIndexMap.put(8000, 0xb);
     }
 
-    public Track(int id, MediaFormat format, boolean audio) throws Exception {
+    public Track(int id, MediaFormat format, boolean audio) {
         trackId = id;
         isAudio = audio;
         if (!isAudio) {

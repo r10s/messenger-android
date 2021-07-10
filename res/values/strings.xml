@@ -853,4 +853,7 @@
     <string name="perm_enable_bg_already_done">You already allowed Delta Chat to receive messages in the background.\n\nIf messages still do not arrive in background, please also check your system settings.</string>
     <string name="update_1_20">Improved e-mail compatibility in version 1.20:\n\n📫 Read mailing lists\n📭 Read HTML-mails\n📪 Nice handling of support addresses\n📫 Many major and minor annoyances fixed\n\nRead our new blog post about these first steps towards mail and more:</string>
 
+    <!-- Video recording error texts -->
+    <string name="no_app_to_capture_video">Can\'t access any app to capture a video.</string>
+    <string name="recoding_video_failed">Recoding failed. Can\'t create video.</string>
 </resources>

@@ -53,6 +53,7 @@ import org.thoughtcrime.securesms.providers.PersistentBlobProvider;
 import org.thoughtcrime.securesms.scribbles.ScribbleActivity;
 import org.thoughtcrime.securesms.util.MediaUtil;
 import org.thoughtcrime.securesms.util.ThemeUtil;
+import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.concurrent.ListenableFuture;
 import org.thoughtcrime.securesms.util.concurrent.ListenableFuture.Listener;
@@ -502,6 +503,8 @@ public class AttachmentManager {
               captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
               captureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
               activity.startActivityForResult(captureIntent, requestCode);
+            } else {
+              Util.runOnMain(()->Toast.makeText(context, R.string.no_app_to_capture_video, Toast.LENGTH_LONG).show());
             }
           } catch (Exception e) {
             Log.w(TAG, e);
