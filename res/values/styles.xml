@@ -105,4 +105,21 @@
         <item name="colorControlActivated">#ff2090ea</item>
     </style>
 
+    <style name="Button.Borderless" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">?attr/colorAccent</item>
+    </style>
+    <style name="Signal.MessageRequest.Button" parent="Button.Borderless">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@drawable/message_request_button_background</item>
+    </style>
+    <style name="Signal.MessageRequest.Button.Deny">
+        <item name="android:textColor">@color/core_red</item>
+    </style>
+
+    <style name="Signal.MessageRequest.Button.Accept">
+        <item name="android:textColor">@color/core_ultramarine</item>
+    </style>
+
 </resources>

@@ -33,7 +33,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.Browser;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
@@ -90,6 +89,7 @@ import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.database.AttachmentDatabase;
 import org.thoughtcrime.securesms.map.MapActivity;
+import org.thoughtcrime.securesms.messagerequests.MessageRequestsBottomView;
 import org.thoughtcrime.securesms.mms.AttachmentManager;
 import org.thoughtcrime.securesms.mms.AttachmentManager.MediaType;
 import org.thoughtcrime.securesms.mms.AudioSlide;
@@ -191,6 +191,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private   InputAwareLayout            container;
   private   View                        composePanel;
   private   ScaleStableImageView        backgroundView;
+  private   MessageRequestsBottomView   messageRequestBottomView;
 
   private   AttachmentTypeSelector attachmentTypeSelector;
   private   AttachmentManager      attachmentManager;
@@ -875,6 +876,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     quickAttachmentToggle = ViewUtil.findById(this, R.id.quick_attachment_toggle);
     inputPanel            = ViewUtil.findById(this, R.id.bottom_panel);
     backgroundView        = ViewUtil.findById(this, R.id.conversation_background);
+    messageRequestBottomView = ViewUtil.findById(this, R.id.conversation_activity_message_request_bottom_bar);
 
     ImageButton quickCameraToggle = ViewUtil.findById(this, R.id.quick_camera_toggle);
 
@@ -1650,4 +1652,16 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
     return true; // action handled by listener
   }
+
+  private boolean isInMessageRequest() {
+    return messageRequestBottomView.getVisibility() == View.VISIBLE;
+  }
+
+  public void onMessageRequest(@NonNull MessageRequestViewModel viewModel) {
+    messageRequestBottomView.setAcceptOnClickListener(v -> viewModel.onAccept());
+    messageRequestBottomView.setDeleteOnClickListener(v -> onMessageRequestDeleteClicked(viewModel));
+    messageRequestBottomView.setBlockOnClickListener(v -> onMessageRequestBlockClicked(viewModel));
+   );
+  }
+
 }

@@ -203,6 +203,7 @@
     <string name="block">Block</string>
     <string name="menu_block_contact">Block contact</string>
     <string name="menu_unblock_contact">Unblock contact</string>
+    <string name="accept">Accept</string>
     <string name="menu_play">Play</string>
     <string name="menu_pause">Pause</string>
     <string name="menu_scroll_to_bottom">Scroll to the bottom</string>
