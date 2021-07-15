@@ -6,9 +6,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import androidx.appcompat.widget.SearchView;
 
 import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicTheme;
+import org.thoughtcrime.securesms.util.Util;
 
 public class WebViewActivity extends PassphraseRequiredActionBarActivity
                                implements SearchView.OnQueryTextListener,
@@ -26,6 +29,7 @@ public class WebViewActivity extends PassphraseRequiredActionBarActivity
   private static final String TAG = WebViewActivity.class.getSimpleName();
 
   protected WebView webView;
+  protected String imageUrl;
   private final DynamicTheme dynamicTheme = new DynamicTheme();
   protected final DynamicLanguage dynamicLanguage = new DynamicLanguage();
 
@@ -41,6 +45,7 @@ public class WebViewActivity extends PassphraseRequiredActionBarActivity
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     webView = findViewById(R.id.webview);
+    registerForContextMenu(webView);
     webView.setWebViewClient(new WebViewClient() {
       // `shouldOverrideUrlLoading()` is called when the user clicks a URL,
       // returning `true` means, the URL is passed to `loadUrl()`, `false` aborts loading.
@@ -91,6 +96,44 @@ public class WebViewActivity extends PassphraseRequiredActionBarActivity
   @Override
   protected void onDestroy() {
     super.onDestroy();
+  }
+
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    if (v instanceof WebView) {
+      WebView.HitTestResult result = ((WebView) v).getHitTestResult();
+      if (result != null) {
+        int type = result.getType();
+        if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+          imageUrl = result.getExtra();
+          super.onCreateContextMenu(menu, v, menuInfo);
+          this.getMenuInflater().inflate(R.menu.web_view_context, menu);
+          menu.setHeaderIcon(android.R.drawable.ic_menu_gallery);
+          if (imageUrl.startsWith("data:")) {
+            menu.setHeaderTitle(getString(R.string.image));
+            menu.findItem(R.id.action_copy_link).setVisible(false);
+          } else {
+            menu.setHeaderTitle(imageUrl);
+            menu.findItem(R.id.action_copy_link).setVisible(true);
+          }
+        }
+      }
+    }
+  }
+
+  @Override
+  public boolean onContextItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_export_image:
+        // TODO: extract image from "data:" link or download URL
+        return true;
+      case R.id.action_copy_link:
+        Util.writeTextToClipboard(this, imageUrl);
+        Toast.makeText(this, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
+        return true;
+      default:
+        return super.onContextItemSelected(item);
+    }
   }
 
   @Override

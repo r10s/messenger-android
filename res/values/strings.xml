@@ -195,6 +195,7 @@
     <string name="menu_mute">Mute notifications</string>
     <string name="menu_unmute">Unmute</string>
     <string name="menu_export_attachment">Export attachment</string>
+    <string name="menu_export_image">Export image</string>
     <string name="menu_all_media">All media</string>
     <!-- menu entry that opens eg. a gallery image or a document in the chat at the correct position -->
     <string name="show_in_chat">Show in chat</string>

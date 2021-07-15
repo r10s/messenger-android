@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="@string/menu_export_image"
+        android:id="@+id/action_export_image"/>
+
+    <item android:title="@string/menu_copy_link_to_clipboard"
+        android:id="@+id/action_copy_link"/>
+
+</menu>
