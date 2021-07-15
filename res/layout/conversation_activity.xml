@@ -42,6 +42,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
+            <org.thoughtcrime.securesms.messagerequests.MessageRequestsBottomView
+                android:id="@+id/conversation_activity_message_request_bottom_bar"
+                android:background="?android:attr/windowBackground"
+                android:visibility="gone"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true" />
+
             <include layout="@layout/conversation_input_panel"/>
 
             <ViewStub

@@ -3,6 +3,7 @@
     <color name="core_blue">#2090ea</color>
     <color name="core_red">#f44336</color>
     <color name="core_red_highlight">#ef5350</color>
+    <color name="core_ultramarine">#2c6bed</color>
 
     <color name="audio_icon">#f68751</color>
     <color name="audio_icon_text">#ed824e</color>
