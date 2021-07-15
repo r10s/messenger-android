@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.content.ClipboardManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -424,13 +423,8 @@ public class ConversationFragment extends MessageSelectorFragment
         }
 
         if (result.length() > 0) {
-            try {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                clipboard.setText(result.toString());
-                Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.copied_to_clipboard), Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Util.writeTextToClipboard(getActivity(), result.toString());
+            Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.copied_to_clipboard), Toast.LENGTH_LONG).show();
         }
     }
 

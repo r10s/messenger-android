@@ -1,8 +1,6 @@
 package org.thoughtcrime.securesms.util;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.ColorInt;
@@ -18,6 +16,7 @@ import com.b44t.messenger.DcContext;
 import org.thoughtcrime.securesms.ConversationActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.util.Util;
 
 public class LongClickCopySpan extends ClickableSpan {
   private static final String PREFIX_MAILTO = "mailto:";
@@ -82,7 +81,7 @@ public class LongClickCopySpan extends ClickableSpan {
     Context context = widget.getContext();
 
     if (url.startsWith(PREFIX_CMD)) {
-      copyUrl(context, url.substring(PREFIX_CMD.length()));
+      Util.writeTextToClipboard(context, url.substring(PREFIX_CMD.length()));
       Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
     } else {
       String preparedUrl = prepareUrl(url);
@@ -92,7 +91,7 @@ public class LongClickCopySpan extends ClickableSpan {
                   context.getString(R.string.menu_copy_to_clipboard)
               },
               (dialogInterface, i) -> {
-                copyUrl(context, preparedUrl);
+                Util.writeTextToClipboard(context, preparedUrl);
                 Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
               })
           .setNegativeButton(R.string.cancel, null)
@@ -110,25 +109,6 @@ public class LongClickCopySpan extends ClickableSpan {
   void setHighlighted(boolean highlighted, @ColorInt int highlightColor) {
     this.isHighlighted = highlighted;
     this.highlightColor = highlightColor;
-  }
-
-  private void copyUrl(Context context, String url) {
-    int sdk = android.os.Build.VERSION.SDK_INT;
-    if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-      @SuppressWarnings("deprecation") android.text.ClipboardManager clipboard =
-              (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-      clipboard.setText(url);
-    } else {
-      copyUriSdk11(context, url);
-    }
-  }
-
-  @TargetApi(android.os.Build.VERSION_CODES.HONEYCOMB)
-  private void copyUriSdk11(Context context, String url) {
-    android.content.ClipboardManager clipboard =
-            (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-    ClipData clip = ClipData.newPlainText(context.getString(R.string.app_name), url);
-    clipboard.setPrimaryClip(clip);
   }
 
   private String prepareUrl(String url) {
